@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Polygon — Catalog</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@700&display=swap" rel="stylesheet">
+  <style>
+    :root { --bg:#efefef; --text:#101010; --accent:#ff3000; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--bg); color:var(--text); font-family:'Inter', sans-serif; font-weight:700; }
+    .font-title { font-family:'Space Mono', monospace; font-weight:700; text-transform:uppercase; }
+    .container { max-width:1200px; margin:0 auto; padding:24px; }
+
+    /* Navbar */
+    .navbar {
+      position:sticky;
+      top:16px;
+      z-index:100;
+      max-width: 710px;
+      margin:0 auto 50px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:12px 20px;
+      border-radius:16px;
+      background:rgba(255,255,255,0.3);
+      border:1px solid rgba(16,16,16,0.15);
+      backdrop-filter:blur(20px);
+    }
+    .navbar-logo img {
+      height:14px;
+      transition: .3s ease;
+    }
+
+    .navbar-logo img:hover{
+      opacity: 50%;
+    }
+    .navbar-links {
+      display:flex;
+      gap:20px;
+      justify-content: right;
+      flex:1;
+      font-family: 'Space Mono';
+      text-transform: uppercase;
+      font-size: 14px;
+    }
+    .navbar-links a {
+      text-decoration:none;
+      color:var(--text);
+      font-weight:700;
+      transition:color 0.2s;
+    }
+    .navbar-links a:hover {
+      color:var(--accent);
+    }
+
+    .btn { display:inline-flex; align-items:center; justify-content:center; gap:8px; color:var(--text); border:1px solid rgba(16,16,16,.15); background:white; padding:10px 14px; border-radius:32px; cursor:pointer; transition:.2s; font-weight:bold; text-transform:uppercase; text-decoration:none; }
+    .btn:hover { color:var(--accent); border-color:var(--accent); }
+    .card { background:#fff; border:1px solid rgba(16,16,16,.1); border-radius:24px; overflow:hidden; box-shadow:0 10px 20px rgba(0,0,0,.04); }
+    .pill { display:inline-block; padding:6px 10px; border:1px solid rgba(16,16,16,.2); border-radius:999px; margin:0 6px 6px 0; font-size:12px; cursor:pointer; transition:.3s ease; }
+    .pill:hover { color:var(--accent); border-color:var(--accent); }
+    .pill--active { color:var(--accent); border-color:var(--accent); }
+    .grid { display:grid; gap:20px; }
+    @media(min-width:750px){ .grid { grid-template-columns:repeat(2,1fr); } }
+    @media(min-width:1024px){ .grid { grid-template-columns:repeat(3,1fr); } }
+    .cover { position:relative; width:100%; aspect-ratio:1/1; background:#ddd; overflow:hidden; }
+    .cover img { width:100%; height:100%; object-fit:cover; transform:scale(1.00); }
+    .shade { position:absolute; inset:0; background:rgba(0,0,0,.6); opacity:0; transition:opacity .15s ease; pointer-events:none; }
+    .play { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; opacity:0; transition:opacity .15s ease; cursor:pointer; background:none; border:0; }
+    .cover:hover .shade { opacity:1; }
+    .cover:hover .play { opacity:1; }
+    .tiny { font-size:12px; }
+    .muted { opacity:.65; }
+    .modal { position:fixed; inset:0; display:none; align-items:center; justify-content:center; z-index:50; }
+    .modal.open { display:flex; }
+    .backdrop { position:absolute; inset:0; background:rgba(0,0,0,.5); }
+    .panel { position:relative; z-index:1; width:min(720px,92vw); background:white; border-radius:16px; padding:18px; box-shadow:0 18px 40px rgba(0,0,0,.18); }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="navbar-logo">
+      <a href="https://polygon.onl"><img src="https://bysurf.github.io/polygon-music/polygon%20logo.png" alt="Polygon Logo"></a>
+    </div>
+    <div class="navbar-links">
+      <a href="https://apply.polygon.onl">Apply</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div id="filterBar" style="margin-bottom:16px; display:flex; flex-wrap:wrap; gap:8px;"></div>
+    <div id="grid" class="grid"></div>
+  </div>
+
+  <div class="modal" id="previewModal">
+    <div class="backdrop" data-close></div>
+    <div class="panel">
+      <div class="font-title tiny" style="margin-bottom:10px;">Preview</div>
+      <div style="position:relative; width:100%; aspect-ratio:16/9; background:#000; border-radius:12px; overflow:hidden;">
+        <iframe id="previewFrame" width="100%" height="100%" src="" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="licenseModal">
+    <div class="backdrop" data-close></div>
+    <div class="panel">
+      <div class="font-title" style="font-size:14px; margin-bottom:6px;">License Reminder</div>
+      <p class="tiny" style="margin:0 0 10px 0;">You need a <span class="font-title" style="font-size:11px;">Polygon License</span> to use this music in your content.</p>
+      <div style="display:flex; gap:10px;">
+        <a class="btn" style="flex:1; color: var(--bg); background: var(--accent);" href="https://apply.polygon.onl" target="_blank">Apply for a license</a>
+        <a class="btn" id="finalDownload" style="flex:1;" href="#">Download</a>
+      </div>
+      <div class="tiny muted" style="margin-top:8px;">Downloading this track in accordance with your license will either grant you usage rights - <span style="font-weight: bold;">If you post and monetize videos without a license, it'll result in a Content ID claim.</span></div>
+    </div>
+  </div>
+
+  <script>
+    function toEmbedUrl(url){
+      if(!url) return '';
+      try{
+        const u = new URL(url);
+        if(u.hostname.includes('youtube.com') && u.searchParams.get('v')){
+          return `https://www.youtube.com/embed/${u.searchParams.get('v')}`;
+        }
+        if(u.hostname === 'youtu.be'){
+          return `https://www.youtube.com/embed${u.pathname}`;
+        }
+      }catch(e){}
+      return url;
+    }
+    async function loadTracks(){
+      const url = 'https://bysurf.github.io/polygon-music/tracklist.json';
+      const res = await fetch(url,{cache:'no-store'});
+      return res.json();
+    }
+    function pill(text, active){
+      return `<button class="pill${active?' pill--active':''}" data-mood="${encodeURIComponent(text)}">${text}</button>`;
+    }
+    function card(t){
+      const tags = (t.moods||[]).map(m => pill(m,false)).join('');
+      return `<article class="card">
+        <div class="cover">
+          <img src="${t.cover}" alt="${t.title}">
+          <div class="shade"></div>
+          <button class="play" data-preview="${encodeURIComponent(t.youtubePreviewUrl||'')}">
+            <span class="btn" style="width:64px;height:64px;border-radius:999px;background:#fff;">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            </span>
+          </button>
+        </div>
+        <div style="padding:14px; display:flex; flex-direction:column; gap:8px;">
+          <div class="font-title">${t.title}</div>
+          <div class="tiny muted">${t.artist}</div>
+          <div style="margin-top:4px;">${tags}</div>
+          <div class="tiny muted" style="margin-top:4px;">BPM: ${t.bpm || '---'}</div>
+          <button class="btn" style="margin-top:8px;" data-dl="${encodeURIComponent(t.directDownload||'')}">Download</button>
+        </div>
+      </article>`;
+    }
+    let ALL=[], ACTIVE=new Set();
+    function renderFilters(){
+      const bar=document.getElementById('filterBar');
+      const moods=[...new Set(ALL.flatMap(t=>t.moods||[]))].sort();
+      bar.innerHTML=moods.map(m=>pill(m,ACTIVE.has(m))).join('')+(ACTIVE.size?` <button class="pill" id="clearFilters">Clear</button>`:'');
+    }
+    function renderGrid(){
+      const grid=document.getElementById('grid');
+      const visible=ACTIVE.size?ALL.filter(t=>[...ACTIVE].every(m=>(t.moods||[]).includes(m))):ALL;
+      grid.innerHTML=visible.map(card).join('');
+    }
+    function openModal(id){document.getElementById(id).classList.add('open');}
+    function closeModal(id){document.getElementById(id).classList.remove('open');}
+    (async function init(){
+      ALL=await loadTracks();
+      renderFilters();
+      renderGrid();
+      document.getElementById('filterBar').addEventListener('click',e=>{
+        const btn=e.target.closest('[data-mood]');
+        if(btn){
+          const mood=decodeURIComponent(btn.getAttribute('data-mood'));
+          if(ACTIVE.has(mood)) ACTIVE.delete(mood); else ACTIVE.add(mood);
+          renderFilters(); renderGrid();
+        }
+        if(e.target.id==='clearFilters'){ACTIVE.clear();renderFilters();renderGrid();}
+      });
+      document.getElementById('grid').addEventListener('click',e=>{
+        const play=e.target.closest('[data-preview]');
+        if(play){
+          const raw = decodeURIComponent(play.getAttribute('data-preview'));
+          const url = toEmbedUrl(raw);
+          document.getElementById('previewFrame').src=`${url}${url.includes('?')?'&':'?'}autoplay=1`;
+          openModal('previewModal'); return;
+        }
+        const dl=e.target.closest('[data-dl]');
+        if(dl){
+          document.getElementById('finalDownload').href=decodeURIComponent(dl.getAttribute('data-dl'));
+          openModal('licenseModal');
+        }
+      });
+      document.querySelectorAll('[data-close], .modal .backdrop').forEach(el=>{
+        el.addEventListener('click',()=>{
+          closeModal('previewModal'); closeModal('licenseModal');
+          document.getElementById('previewFrame').src='';
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

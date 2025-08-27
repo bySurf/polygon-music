@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Polygon — Music Licensing for Modern Creators</title>
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@700&family=Inter:wght@700&display=swap" rel="stylesheet">
+  <style>
+    :root{ --bg:#efefef; --text:#101010; --accent:#ff3000; }
+    *{ box-sizing:border-box; scroll-behavior: smooth;}
+    html,body{ height:100%; }
+    body{ margin:0; background:var(--bg); color:var(--text); font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial; font-weight:700; }
+
+    /* Typography */
+    .font-title{ font-family:'Space Mono',monospace; font-weight:700; text-transform:uppercase; letter-spacing:.02em; }
+    .muted{ opacity:.75; }
+    .tiny{ font-size:12px; opacity:.7; }
+
+    /* Layout */
+    .container{ max-width:1100px; margin:0 auto; padding:24px 16px; }
+
+    /* Buttons */
+    .btn{ display:inline-flex; align-items:center; justify-content:center; gap:8px; color:var(--text); border:1px solid rgba(16,16,16,.15); background:white; padding:12px 16px; border-radius:16px; cursor:pointer; transition:color .2s ease,border-color .2s ease,background .2s ease; text-decoration:none; }
+    .btn:hover{ color:var(--accent); border-color:var(--accent); }
+    .btn-quiet{ background:transparent; }
+    .btn-accent{ background:var(--accent) !important; color:#fff !important; font-family:'Space Mono',monospace; font-weight:700; text-transform:uppercase; letter-spacing:.06em; }
+
+    .card{ background:#fff; border:1px solid rgba(16,16,16,.1); border-radius:24px; box-shadow:0 10px 20px rgba(0,0,0,.04); }
+
+    /* Sticky Glass Navbar */
+    .nav-sticky{ position:sticky; top:12px; z-index:100; }
+    .glass-nav{ display:flex; align-items:center; justify-content:space-between; gap:12px; padding:10px 14px; border-radius:20px; border:1px solid rgba(16,16,16,.15); background:rgba(255,255,255,.3); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); box-shadow:0 10px 20px rgba(0,0,0,.06); }
+    .glass-nav .brand{ display:flex; align-items:center; gap:10px; text-decoration:none; color:var(--text); }
+    .glass-nav .brand img{ width:28px; height:28px; border-radius:6px; }
+    .glass-nav .links{ display:flex; align-items:center; gap:6px; flex-wrap:wrap; }
+    .glass-nav .links a{ text-decoration:none; color:var(--text); padding:8px 10px; border-radius:12px; border:1px solid transparent; transition: .3s ease;}
+    .glass-nav .links a:hover{ color:var(--accent); border-color:var(--accent); }
+    @media (max-width:720px){ .glass-nav .links{ display:none; } }
+
+    /* Hero */
+    .hero{ padding:56px 0 28px; }
+    .hero-inner{ display:grid; grid-template-columns:1fr; gap:20px; align-items:center; }
+    @media(min-width:900px){ .hero-inner{ grid-template-columns:1fr 1fr; } }
+    .logo{ width:160px; height:auto; }
+    .hero-title{ font-size:32px; line-height:1.2; margin:8px 0 6px; }
+    @media(min-width:700px){ .hero-title{ font-size:40px; } }
+    .hero-sub{ font-size:16px; line-height:1.5; }
+
+    /* Feature Grid */
+    .features{ padding:28px 0; }
+    .grid{ display:grid; gap:20px; }
+    .grid-3{ grid-template-columns:1fr; }
+    @media(min-width:900px){ .grid-3{ grid-template-columns:repeat(3,1fr); } }
+    .feature{ padding:18px; }
+    .feature h3{ margin:0 0 6px; font-size:14px; }
+    .feature p{ margin:0; font-size:14px; line-height:1.5; }
+
+    /* Showcase (YouTube) */
+    .showcase{ padding:28px 0; }
+    .thumb{ position:relative; width:100%; aspect-ratio:16/9; background:#000; overflow:hidden; border-radius:16px; }
+    .thumb iframe{ width:100%; height:100%; border:0; }
+
+    /* Pricing */
+    .pricing{ padding:8px 0 28px; }
+    .switcher{ display:inline-flex; border:1px solid rgba(16,16,16,.15); border-radius:16px; overflow:hidden; }
+    .switcher button{ appearance:none; border:0; background:#fff; padding:8px 12px; cursor:pointer; font-family:'Space Mono',monospace; text-transform:uppercase; }
+    .switcher button.active{ background:var(--accent); color:#fff; }
+    .pricing-grid{ display:grid; gap:16px; grid-template-columns:1fr; margin-top:14px; }
+    @media(min-width:900px){ .pricing-grid{ grid-template-columns:repeat(3,1fr); } }
+    .price-card{ position:relative; padding:28px 18px 18px; border-radius:20px; border:1px solid rgba(16,16,16,.1); background:#fff; }
+    .price-top{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:6px; }
+    .price{ font-size:28px; }
+    .billed{ font-size:12px; opacity:.65; }
+    .popular{ position:absolute; top:10px; left:10px; background:var(--accent); color:#fff; padding:6px 10px; border-radius:999px; font-family:'Space Mono',monospace; text-transform:uppercase; font-size:10px; letter-spacing:.06em; }
+    .is-popular{ border-color: var(--accent); box-shadow:0 6px 18px rgba(255,48,0,.12); animation: popular-glow 2s ease infinite; }
+    @keyframes popular-glow{ 0%{ box-shadow:0 6px 18px rgba(255,48,0,.12);} 50%{ box-shadow:0 6px 65px rgba(255,48,0,.3);} 100%{ box-shadow:0 6px 18px rgba(255,48,0,.12);} }
+    .perk-list{ margin:12px 0 0 18px; line-height:1.6; }
+    .perk-list li{ margin-bottom:4px; }
+
+    /* CTA */
+    .cta{ margin:28px 0 60px; border-radius:24px; overflow:hidden; }
+    .cta-inner{ background:#fff; color:var(--text); padding:28px; display:grid; grid-template-columns:1fr; gap:16px; align-items:center; border:1px solid rgba(16,16,16,.1); box-shadow:0 10px 20px rgba(0,0,0,.04); border-radius:24px; }
+    @media(min-width:900px){ .cta-inner{ grid-template-columns:2fr 1fr; } }
+
+    /* Footer */
+    footer{ padding:28px 0 40px; text-align:center; }
+  </style>
+</head>
+<body>
+  <!-- Sticky glass navbar -->
+  <div class="nav-sticky">
+    <div class="container" style="padding-top:16px;">
+      <nav class="glass-nav">
+        <a class="brand" href="https://polygon.onl">
+          <span class="font-title">Polygon</span>
+        </a>
+        <a class="btn btn-accent" href="https://www.polygon.onl/catalog">Browse the Catalog <span aria-hidden="true">↗</span></a>
+      </nav>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <header id="top" class="hero">
+    <div class="container hero-inner">
+      <div>
+        <img class="logo" src="https://bysurf.github.io/polygon-music/polygon%20logo.png" alt="Polygon logo"/>
+        <h1 class="font-title hero-title">Music Licensing for Single & Scalable Creators</h1>
+        <p class="hero-sub">Polygon is a streamlined catalog of creator-ready soundtracks — priced fairly for solo creators and built to scale with growing channels and teams.</p>
+        <div style="display:flex; gap:10px; margin-top:14px; flex-wrap:wrap;">
+          <a class="btn" href="https://www.polygon.onl/catalog">Browse Catalog <span aria-hidden="true">↗</span></a>
+          <a class="btn btn-quiet" href="#cta">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 4h16v16H4V4zm2 2v12h12V6H6zm3 2h6v2H9V8zm0 4h6v2H9v-2z"/></svg>
+            Apply for a License
+          </a>
+        </div>
+      </div>
+      <div class="card" style="padding:16px;">
+        <div class="font-title" style="font-size:12px; margin-bottom:8px;">Why Polygon</div>
+        <ul style="margin:0; padding-left:18px; font-size:14px; line-height:1.6;">
+          <li>Lower cost for individuals — no bloated enterprise pricing.</li>
+          <li>Scales with you — flexible licensing as your content grows.</li>
+          <li>Curated catalog — music designed for shorts, vlogs, docs & ads.</li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+  <!-- advantages -->
+  <section class="features">
+    <div class="container">
+      <div class="grid grid-3">
+        <div class="card feature">
+          <h3 class="font-title">Cheaper for Solo Creators</h3>
+          <p>Keep your margins: simple pricing that doesn’t punish small channels or one-off projects.</p>
+        </div>
+        <div class="card feature">
+          <h3 class="font-title">Scalable for Teams</h3>
+          <p>Upgrade only when you grow. Licenses that expand for agencies, brands, and multi-channel networks.</p>
+        </div>
+        <div class="card feature">
+          <h3 class="font-title">Proven to enhance stories</h3>
+          <p>Our tracks have backed content that’s reached millions of views across YouTube and social.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- vids that use the music -->
+  <section class="showcase" id="showcase-videos">
+    <div class="container">
+      <div class="font-title" style="font-size:14px; margin-bottom:10px;">Featured Videos Using Polygon Music</div>
+      <div class="grid grid-3">
+        <div class="card" style="padding:12px;">
+          <div class="thumb"><iframe src="https://www.youtube.com/embed/wnK8VVUMuVs?si=zPEBjQAv4ilkhijU" title="Example 1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
+          <div style="margin-top:10px;" class="tiny muted">CalebIsSalty</div>
+        </div>
+        <div class="card" style="padding:12px;">
+          <div class="thumb"><iframe src="https://www.youtube.com/embed/whbqyDbsBn4?si=drQt0LI6ScPNjwcz" title="Example 2" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
+          <div style="margin-top:10px;" class="tiny muted">Barnes</div>
+        </div>
+        <div class="card" style="padding:12px;">
+          <div class="thumb"><iframe src="https://www.youtube.com/embed/-oCxjM3ANv8?si=BiAK2_JWGYhl1BZv" title="Example 3" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
+          <div style="margin-top:10px;" class="tiny muted">bySurf</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section class="pricing" id="pricing">
+    <div class="container">
+      <div class="font-title" style="font-size:14px; margin-bottom:10px;">Simple Pricing</div>
+      <div style="display:flex; gap:10px; align-items:center;">
+        <div class="switcher" id="billingSwitch">
+          <button type="button" data-mode="monthly" class="active">Monthly</button>
+          <button type="button" data-mode="annual">Annual</button>
+        </div>
+      </div>
+      <div class="pricing-grid" style="margin-top:14px;">
+        <!-- Solo Creator -->
+        <div class="price-card" id="plan-solo">
+          <div class="price-top">
+            <div class="font-title">Solo Creator</div>
+            <div class="price" data-price>€5</div>
+          </div>
+          <div class="billed" data-billed>(billed once a month)</div>
+          <ul class="tiny perk-list">
+            <li>Content ID clearance for <b>1 creator</b></li>
+            <li>Unlimited catalog downloads</li>
+            <li>Full commercial usage on YouTube, TikTok, Instagram</li>
+            <li>Monetized videos & sponsorship reads included</li>
+          </ul>
+        </div>
+        <!-- Growing Network (Most Popular) -->
+        <div class="price-card is-popular" id="plan-growing">
+          <div class="popular">Most Popular</div>
+          <div class="price-top">
+            <div class="font-title" style="color:var(--accent);">Growing Network</div>
+            <div class="price" data-price>€10</div>
+          </div>
+          <div class="billed" data-billed>(billed once a month)</div>
+          <ul class="tiny perk-list">
+            <li>Content ID clearance for <b>3 creators</b></li>
+            <li>Unlimited catalog downloads</li>
+            <li>Full commercial usage on YouTube, TikTok, Instagram</li>
+            <li>Monetized videos & sponsorship reads included</li>
+          </ul>
+        </div>
+        <!-- Polygon Suite -->
+        <div class="price-card" id="plan-suite">
+          <div class="price-top">
+            <div class="font-title">Polygon Suite</div>
+            <div class="price" data-price>€15</div>
+          </div>
+          <div class="billed" data-billed>(billed once a month)</div>
+          <ul class="tiny perk-list">
+            <li>Content ID clearance for <b>5 creators</b></li>
+            <li>Unlimited catalog downloads</li>
+            <li>Full commercial usage on YouTube, TikTok, Instagram</li>
+            <li>Monetized videos & sponsorship reads included</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section id="cta" class="cta">
+    <div class="container">
+      <div class="cta-inner card">
+        <div>
+          <div class="font-title" style="font-size:26px;">Ready to license Polygon music?</div>
+          <p style="margin:8px 0 0;">Tell us about your channel or project — we’ll match you with the right license tier.</p>
+        </div>
+        <div style="display:flex; gap:10px; justify-content:flex-start; flex-wrap:wrap;">
+          <a class="btn" href="https://apply.polygon.onl" target="_blank" rel="noreferrer">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 4h16v16H4V4zm2 2v12h12V6H6zm3 2h6v2H9V8zm0 4h6v2H9v-2z"/></svg>
+            Apply for a License
+          </a>
+          <a class="btn btn-accent" href="https://www.polygon.onl/catalog">Browse the Catalog <span aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container tiny muted">© <span id="year"></span> Polygon / <a href="http://www.studiobysurf.com/impressum">Impressum</a></div>
+  </footer>
+
+  <script>
+    // Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Pricing toggle logic
+    const MONTHLY = { solo: 5, growing: 10, suite: 15 };
+    const ANNUAL = {
+      solo: Math.round(MONTHLY.solo * 12 * 0.8),
+      growing: Math.round(MONTHLY.growing * 12 * 0.8),
+      suite: Math.round(MONTHLY.suite * 12 * 0.8)
+    };
+
+    let mode = 'monthly';
+    const grid = document.querySelector('.pricing-grid');
+
+    function updatePrices(){
+      const prices = mode === 'monthly' ? MONTHLY : ANNUAL;
+      grid.querySelectorAll('.price-card').forEach((card) => {
+        const id = card.id.replace('plan-','');
+        const val = prices[id];
+        const priceEl = card.querySelector('[data-price]');
+        const billedEl = card.querySelector('[data-billed]');
+        priceEl.textContent = `€${val}`;
+        billedEl.textContent = mode==='monthly' ? '(billed once a month)' : '(billed once a year)';
+      });
+    }
+
+    document.getElementById('billingSwitch').addEventListener('click', (e)=>{
+      const btn = e.target.closest('button[data-mode]');
+      if(!btn) return;
+      mode = btn.getAttribute('data-mode');
+      document.querySelectorAll('#billingSwitch button').forEach(b=>b.classList.toggle('active', b===btn));
+      updatePrices();
+    });
+
+    updatePrices();
+  </script>
+</body>
+</html>
