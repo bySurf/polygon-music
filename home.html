@@ -77,6 +77,8 @@
     @keyframes popular-glow{ 0%{ box-shadow:0 6px 18px rgba(255,48,0,.12);} 50%{ box-shadow:0 6px 65px rgba(255,48,0,.3);} 100%{ box-shadow:0 6px 18px rgba(255,48,0,.12);} }
     .perk-list{ margin:12px 0 0 18px; line-height:1.6; }
     .perk-list li{ margin-bottom:4px; }
+    .subscribe-row{ margin-top:12px; display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+    .price-note{ font-size:11px; opacity:.7; }
 
     /* CTA */
     .cta{ margin:28px 0 60px; border-radius:24px; overflow:hidden; }
@@ -191,7 +193,12 @@
             <li>Full commercial usage on YouTube, TikTok, Instagram</li>
             <li>Monetized videos & sponsorship reads included</li>
           </ul>
+          <div class="subscribe-row">
+            <a class="btn btn-accent subscribe-btn" data-plan="solo" target="_blank" rel="noreferrer noopener" href="https://polygon-music-library-shop.fourthwall.com/supporters/payments/checkout?plan=plan_LQyAoV7X29eOs7zx2xE3Bn9m">Subscribe — Monthly</a>
+            <span class="price-note tiny">Opens secure Fourthwall checkout</span>
+          </div>
         </div>
+        
         <!-- Growing Network (Most Popular) -->
         <div class="price-card is-popular" id="plan-growing">
           <div class="popular">Most Popular</div>
@@ -206,7 +213,12 @@
             <li>Full commercial usage on YouTube, TikTok, Instagram</li>
             <li>Monetized videos & sponsorship reads included</li>
           </ul>
+          <div class="subscribe-row">
+            <a class="btn btn-accent subscribe-btn" data-plan="growing" target="_blank" rel="noreferrer noopener" href="https://polygon-music-library-shop.fourthwall.com/supporters/payments/checkout?plan=plan_6E1d8Gxrqrb5cAYYqJMwQk0g">Subscribe — Monthly</a>
+            <span class="price-note tiny">Opens secure Fourthwall checkout</span>
+          </div>
         </div>
+        
         <!-- Polygon Suite -->
         <div class="price-card" id="plan-suite">
           <div class="price-top">
@@ -220,6 +232,10 @@
             <li>Full commercial usage on YouTube, TikTok, Instagram</li>
             <li>Monetized videos & sponsorship reads included</li>
           </ul>
+          <div class="subscribe-row">
+            <a class="btn btn-accent subscribe-btn" data-plan="suite" target="_blank" rel="noreferrer noopener" href="https://polygon-music-library-shop.fourthwall.com/supporters/payments/checkout?plan=plan_LQyAoV7X29eOsgDg2xE3Bn9m">Subscribe — Monthly</a>
+            <span class="price-note tiny">Opens secure Fourthwall checkout</span>
+          </div>
         </div>
       </div>
     </div>
@@ -234,7 +250,7 @@
           <p style="margin:8px 0 0;">Tell us about your channel or project — we’ll match you with the right license tier.</p>
         </div>
         <div style="display:flex; gap:10px; justify-content:flex-start; flex-wrap:wrap;">
-          <a class="btn" href="https://apply.polygon.onl" target="_blank" rel="noreferrer">
+          <a class="btn" href="https://apply.polygon.onl" target="_blank" rel="noreferrer noopener">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 4h16v16H4V4zm2 2v12h12V6H6zm3 2h6v2H9V8zm0 4h6v2H9v-2z"/></svg>
             Apply for a License
           </a>
@@ -252,7 +268,7 @@
     // Year
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // Pricing toggle logic
+    // Pricing values
     const MONTHLY = { solo: 5, growing: 10, suite: 15 };
     const ANNUAL = {
       solo: Math.round(MONTHLY.solo * 12 * 0.8),
@@ -270,8 +286,16 @@
         const val = prices[id];
         const priceEl = card.querySelector('[data-price]');
         const billedEl = card.querySelector('[data-billed]');
+        const btnEl = card.querySelector('.subscribe-btn');
+
         priceEl.textContent = `€${val}`;
         billedEl.textContent = mode==='monthly' ? '(billed once a month)' : '(billed once a year)';
+
+        // Update subscribe button label to reflect billing mode
+        if(btnEl){
+          btnEl.textContent = mode==='monthly' ? 'Subscribe — Monthly' : 'Subscribe — Annual';
+          btnEl.setAttribute('aria-label', `${card.querySelector('.font-title').textContent} – ${btnEl.textContent}`);
+        }
       });
     }
 
