@@ -49,9 +49,9 @@
 
     /* Feature Grid */
     .features{ padding:28px 0; }
-    .grid{ display:grid; gap:20px; }
-    .grid-3{ grid-template-columns:1fr; }
-    @media(min-width:900px){ .grid-3{ grid-template-columns:repeat(3,1fr); } }
+    .ft-grid{ display:grid; gap:20px; }
+    .ft-grid-3{ grid-template-columns:1fr; }
+    @media(min-width:900px){ .ft-grid-3{ grid-template-columns:repeat(3,1fr); } }
     .feature{ padding:18px; }
     .feature h3{ margin:0 0 6px; font-size:14px; }
     .feature p{ margin:0; font-size:14px; line-height:1.5; }
@@ -90,18 +90,6 @@
   </style>
 </head>
 <body>
-  <!-- Sticky glass navbar -->
-  <div class="nav-sticky">
-    <div class="container" style="padding-top:16px;">
-      <nav class="glass-nav">
-        <a class="brand" href="https://polygon.onl">
-          <span class="font-title">Polygon</span>
-        </a>
-        <a class="btn btn-accent" href="https://www.polygon.onl/catalog">Browse the Catalog <span aria-hidden="true">↗</span></a>
-      </nav>
-    </div>
-  </div>
-
   <!-- HERO -->
   <header id="top" class="hero">
     <div class="container hero-inner">
@@ -110,7 +98,7 @@
         <h1 class="font-title hero-title">Music Licensing for Single & Scalable Creators</h1>
         <p class="hero-sub">Polygon is a streamlined catalog of creator-ready soundtracks — priced fairly for solo creators and built to scale with growing channels and teams.</p>
         <div style="display:flex; gap:10px; margin-top:14px; flex-wrap:wrap;">
-          <a class="btn" href="https://www.polygon.onl/catalog">Browse Catalog <span aria-hidden="true">↗</span></a>
+          <a class="btn" href="https://www.youtube.com/@bysurfmusic" target="_blank">Music Previews <span aria-hidden="true">↗</span></a>
           <a class="btn btn-quiet" href="#pricing">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 4h16v16H4V4zm2 2v12h12V6H6zm3 2h6v2H9V8zm0 4h6v2H9v-2z"/></svg>
             Check out our pricing
@@ -131,7 +119,7 @@
   <!-- advantages -->
   <section class="features">
     <div class="container">
-      <div class="grid grid-3">
+      <div class="ft-grid ft-grid-3">
         <div class="card feature">
           <h3 class="font-title">Cheaper for Solo Creators</h3>
           <p>Keep your margins: simple pricing that doesn’t punish small channels or one-off projects.</p>
@@ -152,7 +140,7 @@
   <section class="showcase" id="showcase-videos">
     <div class="container">
       <div class="font-title" style="font-size:14px; margin-bottom:10px;">Featured Videos Using Polygon Music</div>
-      <div class="grid grid-3">
+      <div class="ft-grid ft-grid-3">
         <div class="card" style="padding:12px;">
           <div class="thumb"><iframe src="https://www.youtube.com/embed/wnK8VVUMuVs?si=zPEBjQAv4ilkhijU" title="Example 1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
           <div style="margin-top:10px;" class="tiny muted">CalebIsSalty</div>
@@ -173,12 +161,6 @@
   <section class="pricing" id="pricing">
     <div class="container">
       <div class="font-title" style="font-size:14px; margin-bottom:10px;">Simple Pricing</div>
-      <div style="display:flex; gap:10px; align-items:center;">
-        <div class="switcher" id="billingSwitch">
-          <button type="button" data-mode="monthly" class="active">Monthly</button>
-          <button type="button" data-mode="annual">Annual</button>
-        </div>
-      </div>
       <div class="pricing-grid" style="margin-top:14px;">
         <!-- Solo Creator -->
         <div class="price-card" id="plan-solo">
@@ -186,7 +168,7 @@
             <div class="font-title">Solo Creator</div>
             <div class="price" data-price>€5</div>
           </div>
-          <div class="billed" data-billed>(billed once a month)</div>
+          <div class="billed" data-billed>€48 anually</div>
           <ul class="tiny perk-list">
             <li>Content ID clearance for <b>1 creator</b></li>
             <li>Unlimited catalog downloads</li>
@@ -206,7 +188,7 @@
             <div class="font-title" style="color:var(--accent);">Growing Network</div>
             <div class="price" data-price>€10</div>
           </div>
-          <div class="billed" data-billed>(billed once a month)</div>
+          <div class="billed" data-billed>€91.20 anually</div>
           <ul class="tiny perk-list">
             <li>Content ID clearance for <b>3 creators</b></li>
             <li>Unlimited catalog downloads</li>
@@ -225,7 +207,7 @@
             <div class="font-title">Polygon Suite</div>
             <div class="price" data-price>€15</div>
           </div>
-          <div class="billed" data-billed>(billed once a month)</div>
+          <div class="billed" data-billed>€134.40 anually</div>
           <ul class="tiny perk-list">
             <li>Content ID clearance for <b>5 creators</b></li>
             <li>Unlimited catalog downloads</li>
@@ -241,7 +223,7 @@
     </div>
   </section>
 
-  <!-- CTA -->
+  <!-- Fuck this CTA lmao 
   <section id="cta" class="cta">
     <div class="container">
       <div class="cta-inner card">
@@ -254,11 +236,7 @@
         </div>
       </div>
     </div>
-  </section>
-
-  <footer>
-    <div class="container tiny muted">© <span id="year"></span> Polygon / <a href="http://www.studiobysurf.com/impressum">Impressum (Mausrad klicken)</a></div>
-  </footer>
+  </section>-->
 
   <script>
     // Year
